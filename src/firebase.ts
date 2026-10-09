@@ -7,6 +7,11 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account',
+});
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
 
 export const SUPER_ADMIN_EMAIL = 'fluke12345638@gmail.com';
 
