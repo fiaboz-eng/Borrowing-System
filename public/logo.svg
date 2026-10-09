@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+  <!-- Shutter Button -->
+  <path d="M 88 140 C 88 132 94 126 102 126 H 138 C 146 126 152 132 152 140 V 174 H 88 Z" />
+  
+  <!-- Pentaprism Top Plate -->
+  <path d="M 194 174 L 210 134 C 213 128 219 124 226 124 H 304 C 311 124 317 128 320 134 L 336 174 Z" />
+  
+  <!-- Flash Burst -->
+  <path d="M 314 42 L 268 76 L 314 100 L 266 128 L 320 156 L 358 136 L 382 160 L 424 154 L 396 114 L 442 102 L 392 70 L 362 108 L 348 70 Z" />
+
+  <!-- Camera Body with Lens Cutout -->
+  <path fill-rule="evenodd" clip-rule="evenodd" d="
+    M 64 178
+    C 42 178 24 196 24 218
+    V 438
+    C 24 460 42 478 64 478
+    H 448
+    C 470 478 488 460 488 438
+    V 218
+    C 488 196 470 178 448 178
+    H 64 Z
+    M 400 244
+    C 413.25 244 424 233.25 424 220
+    C 424 206.75 413.25 196 400 196
+    C 386.75 196 376 206.75 376 220
+    C 376 233.25 386.75 244 400 244 Z
+    M 256 226
+    C 320 226 372 278 372 342
+    C 372 406 320 458 256 458
+    C 192 458 140 406 140 342
+    C 140 278 192 226 256 226 Z
+  " />
+
+  <!-- Outer Lens Ring (White Gap) -->
+  <circle cx="256" cy="342" r="94" fill="white" />
+
+  <!-- Main Lens Inner Body (Black) -->
+  <circle cx="256" cy="342" r="76" fill="currentColor" />
+
+  <!-- Lens Element Reflection (White Ring Accent) -->
+  <circle cx="256" cy="342" r="48" fill="none" stroke="white" stroke-width="12" />
+</svg>

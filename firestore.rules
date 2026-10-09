@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'fluke12345638@gmail.com' ||
+        (request.auth.token.email != null && request.auth.token.email.lower() == 'fluke12345638@gmail.com')
+      );
+    }
+
+    function isRegisteredAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admin_members/$(request.auth.uid)) ||
+        (request.auth.token.email != null && exists(/databases/$(database)/documents/admin_members/$(request.auth.token.email.lower())))
+      );
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || isRegisteredAdmin();
+    }
+
+    // 1. User Profiles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // 2. Equipment Inventory (Public Catalog Read, Admin Write)
+    match /equipments/{equipmentId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // 3. Borrow Requests
+    match /borrow_requests/{requestId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        isAdmin() ||
+        (resource.data.userId == request.auth.uid)
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 4. Admin Members List
+    match /admin_members/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
