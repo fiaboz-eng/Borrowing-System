@@ -51,22 +51,58 @@ export const AuthErrorModal: React.FC = () => {
           </div>
         )}
 
-        {/* If domain issue, show quick copy */}
+        {/* If domain issue, show quick copy & step-by-step instructions */}
         {authError.code === 'auth/unauthorized-domain' && (
-          <div className="mb-5 p-3 rounded-xl bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-900 text-xs">
-            <div className="font-semibold text-blue-900 dark:text-blue-200 mb-1">
-              โดเมนปัจจุบันที่ต้องเพิ่มใน Firebase Console:
+          <div className="mb-5 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-xs">
+            <div className="flex items-center space-x-1.5 font-bold text-amber-900 dark:text-amber-200 mb-1.5 text-sm">
+              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>วิธีแก้ปัญหา: เพิ่มโดเมนนี้ใน Firebase Console</span>
             </div>
-            <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-blue-200/60 font-mono text-blue-700 dark:text-blue-300">
-              <span className="truncate mr-2">{currentHostname}</span>
-              <button
-                onClick={handleCopyDomain}
-                className="text-xs flex items-center space-x-1 text-blue-600 hover:text-blue-800 font-sans shrink-0 font-medium cursor-pointer"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'คัดลอกแล้ว' : 'คัดลอก'}</span>
-              </button>
+            <p className="text-amber-800/90 dark:text-amber-300/90 mb-3 leading-relaxed">
+              Firebase ป้องกันการโจมตีโดยจะอนุญาตให้ล็อกอิน Google ได้เฉพาะบนโดเมนที่ระบุไว้เท่านั้น เมื่อนำเว็บไป Deploy บน Vercel หรือโดเมนอื่น จึงต้องกดเพิ่มโดเมนก่อน 1 ครั้ง
+            </p>
+
+            <div className="mb-3">
+              <div className="font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                1. คัดลอกชื่อโดเมนนี้:
+              </div>
+              <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-3 py-2 rounded-lg border border-amber-200 dark:border-slate-700 font-mono text-blue-700 dark:text-blue-300">
+                <span className="truncate mr-2 font-bold select-all">{currentHostname}</span>
+                <button
+                  type="button"
+                  onClick={handleCopyDomain}
+                  className="text-xs flex items-center space-x-1 px-2.5 py-1 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/40 dark:hover:bg-blue-900/70 text-blue-700 dark:text-blue-300 rounded-md font-sans shrink-0 font-medium cursor-pointer transition"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copied ? 'คัดลอกสำเร็จ!' : 'คัดลอกโดเมน'}</span>
+                </button>
+              </div>
             </div>
+
+            <div className="space-y-1.5 text-slate-600 dark:text-slate-300 mb-3 pl-1 leading-relaxed">
+              <div className="font-semibold text-slate-700 dark:text-slate-200">
+                2. ขั้นตอนใน Firebase Console:
+              </div>
+              <p className="text-[11px] sm:text-xs">
+                • ไปที่ <strong>Authentication</strong> &gt; แถบ <strong>Settings</strong> &gt; เลื่อนลงไปที่ <strong>Authorized domains</strong>
+              </p>
+              <p className="text-[11px] sm:text-xs">
+                • กดปุ่ม <strong>"Add domain"</strong> &gt; วางโดเมน <code className="bg-amber-100 dark:bg-slate-800 px-1 py-0.5 rounded text-amber-900 dark:text-amber-200 font-mono">{currentHostname}</code> แล้วกด <strong>Save</strong>
+              </p>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                (การตั้งค่าจะมีผลทันที จากนั้นสามารถกดล็อกอิน Google ได้เลย)
+              </p>
+            </div>
+
+            <a
+              href="https://console.firebase.google.com/project/braided-scarab-j61jg/authentication/settings"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium text-xs transition shadow-xs"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>เปิดหน้า Firebase Console Authorized Domains โดยตรง</span>
+            </a>
           </div>
         )}
 
